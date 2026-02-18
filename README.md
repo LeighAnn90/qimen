@@ -22,7 +22,7 @@
 
 ## 在线使用
 
-访问：https://leighann.github.io/qimen/
+访问：https://leighann90.github.io/qimen/
 
 ## 本地使用
 
