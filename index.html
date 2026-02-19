@@ -2168,7 +2168,8 @@
       const counterClockwisePath = [1, 6, 7, 2, 9, 4, 3, 8];
       
       // 根据阴阳遁选择路径
-      const palacePath = isYang ? clockwisePath : counterClockwisePath;
+      // 修正：八门排布永远顺飞（顺时针），即按照 1->8->3->4->9->2->7->6 的顺序
+      const palacePath = clockwisePath;
       
       // 找到直使门在门序列中的索引
       const doorIdx = doorsSequence.indexOf(zhiShi);
