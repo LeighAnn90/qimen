@@ -2186,8 +2186,8 @@
       // 中5宫无门
       resultLayout[5] = '';
       
-      // 计算暗干
-      const anGan = calculateAnGan(currentLoc, hourGan, isYang, xunShouStem);
+      // 计算暗干（需要传入地盘信息用于伏吟判断）
+      const anGan = calculateAnGan(currentLoc, hourGan, isYang, xunShouStem, earthPalaces);
       
       return {
         layout: resultLayout,
@@ -2198,7 +2198,7 @@
     }
 
     // 计算暗干
-    function calculateAnGan(zhiShiPalace, hourStem, isYang, leaderStem) {
+    function calculateAnGan(zhiShiPalace, hourStem, isYang, leaderStem, earthPalaces) {
       // 标准奇门天干环（六仪三奇顺序）
       const stemRing = ['戊', '己', '庚', '辛', '壬', '癸', '丁', '丙', '乙'];
       
@@ -2214,8 +2214,22 @@
       // 初始化结果容器
       const anGanResult = {};
       
+      // 确定起始宫位（处理两种特殊情况）
+      let startPalace = zhiShiPalace;
+      
+      // 情况A：值使门落入中宫（5宫）
+      // 隐干（时干）直接进入中五宫，然后从五宫出发
+      if (zhiShiPalace === 5) {
+        startPalace = 5;
+      }
+      // 情况B：伏吟处理 - 隐干与地盘干相同
+      // 当值使门落宫的地盘干恰好就是时干（隐干）时，将隐干拨入中五宫
+      else if (earthPalaces && earthPalaces[zhiShiPalace] === actualStem) {
+        startPalace = 5;
+      }
+      
       // 开始排布（遍历9次）
-      let currentPalace = zhiShiPalace;
+      let currentPalace = startPalace;
       
       for (let i = 0; i < 9; i++) {
         // 记录当前宫位的暗干
