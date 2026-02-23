@@ -232,58 +232,64 @@
       color: #2c3e50;
     }
 
-    /* 节气区域 */
-    .jieqi-item {
-      margin-bottom: 12px;
+    /* 奇门遁甲 - 节气与局数信息 */
+    .qimen-jieqi-info {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 15px;
     }
 
-    .jieqi-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .jieqi-name {
-      font-weight: bold;
-      color: #2c3e50;
-    }
-
-    .jieqi-time {
-      color: #666;
-      font-size: 14px;
-    }
-
-    .jieqi-distance {
-      color: #999;
-      font-size: 13px;
-      margin-top: 2px;
-    }
-
-    /* 奇门遁甲 */
-    .qimen-info {
+    .qimen-jieqi-row {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      padding: 6px 0;
     }
 
-    .qimen-item {
+    .qimen-jieqi-row:not(:last-child) {
+      border-bottom: 1px dashed #e0e0e0;
+    }
+
+    .qimen-ju-row {
+      padding-top: 10px;
+    }
+
+    .qimen-jieqi-item {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
     }
 
-    .qimen-label {
-      color: #666;
+    .qimen-jieqi-label {
+      font-size: 12px;
+      color: #6c757d;
+    }
+
+    .qimen-jieqi-name {
       font-size: 14px;
+      font-weight: 600;
+      color: #2e7d32;
     }
 
-    .qimen-ju {
-      margin-top: 5px;
-      padding-top: 10px;
-      border-top: 1px solid #eee;
+    .qimen-jieqi-time {
+      font-size: 12px;
+      color: #666;
     }
 
-    .qimen-ju strong {
-      font-size: 20px;
-      color: #e74c3c;
+    .qimen-jieqi-dist {
+      font-size: 11px;
+      color: #999;
+    }
+
+    .qimen-current-jieqi {
+      font-size: 15px;
+      color: #1565c0;
+    }
+
+    .qimen-ju-value {
+      font-size: 18px;
+      color: #e74c3c !important;
     }
 
     .qimen-adjust {
@@ -1405,18 +1411,37 @@
         请设置时间后点击「开始计算」
       </div>
       <div class="result-content" id="qimenContent">
-        <div class="qimen-info">
-          <div class="qimen-item">
-            <span class="qimen-label">当前节气:</span>
-            <strong id="qimenJieqi"></strong>
+        <!-- 节气与局数信息 -->
+        <div class="qimen-jieqi-info">
+          <div class="qimen-jieqi-row">
+            <div class="qimen-jieqi-item">
+              <span class="qimen-jieqi-label">上一节气:</span>
+              <span class="qimen-jieqi-name" id="prevJieqiName">--</span>
+              <span class="qimen-jieqi-time" id="prevJieqiTime"></span>
+              <span class="qimen-jieqi-dist">(已过 <span id="prevJieqiDistance">--</span>)</span>
+            </div>
           </div>
-          <div class="qimen-item">
-            <span class="qimen-label">三元:</span>
-            <strong id="qimenSanyuan"></strong>
+          <div class="qimen-jieqi-row">
+            <div class="qimen-jieqi-item">
+              <span class="qimen-jieqi-label">下一节气:</span>
+              <span class="qimen-jieqi-name" id="nextJieqiName">--</span>
+              <span class="qimen-jieqi-time" id="nextJieqiTime"></span>
+              <span class="qimen-jieqi-dist">(还有 <span id="nextJieqiDistance">--</span>)</span>
+            </div>
           </div>
-          <div class="qimen-item qimen-ju">
-            <span class="qimen-label">推算局数:</span>
-            <strong id="qimenJu"></strong>
+          <div class="qimen-jieqi-row qimen-ju-row">
+            <div class="qimen-jieqi-item">
+              <span class="qimen-jieqi-label">当前节气:</span>
+              <strong id="qimenJieqi" class="qimen-current-jieqi">--</strong>
+            </div>
+            <div class="qimen-jieqi-item">
+              <span class="qimen-jieqi-label">三元:</span>
+              <strong id="qimenSanyuan">--</strong>
+            </div>
+            <div class="qimen-jieqi-item">
+              <span class="qimen-jieqi-label">推算局数:</span>
+              <strong id="qimenJu" class="qimen-ju-value">--</strong>
+            </div>
           </div>
         </div>
         <div class="qimen-adjust">
@@ -1889,24 +1914,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 节气显示 -->
-    <div class="card">
-      <div class="card-title">节气信息</div>
-      <div class="result-placeholder" id="jieqiPlaceholder">
-        请设置时间后点击「开始计算」
-      </div>
-      <div class="result-content" id="jieqiContent">
-        <div class="jieqi-item">
-          <div><span class="jieqi-name" id="prevJieqiName"></span> <span class="jieqi-time" id="prevJieqiTime"></span></div>
-          <div class="jieqi-distance">已过: <span id="prevJieqiDistance"></span></div>
-        </div>
-        <div class="jieqi-item">
-          <div><span class="jieqi-name" id="nextJieqiName"></span> <span class="jieqi-time" id="nextJieqiTime"></span></div>
-          <div class="jieqi-distance">还有: <span id="nextJieqiDistance"></span></div>
         </div>
       </div>
     </div>
@@ -3066,8 +3073,6 @@
       // 显示结果
       document.getElementById('resultPlaceholder').style.display = 'none';
       document.getElementById('resultContent').classList.add('show');
-      document.getElementById('jieqiPlaceholder').style.display = 'none';
-      document.getElementById('jieqiContent').classList.add('show');
 
       // 真太阳时显示
       if (useTrueSolar) {
