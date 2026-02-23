@@ -755,6 +755,65 @@
       margin: 2px;
     }
 
+    /* 奇门综合盘信息栏 */
+    .qimen-pan-info {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+    }
+
+    .qimen-info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-bottom: 8px;
+    }
+
+    .qimen-info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .qimen-info-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .qimen-info-label {
+      font-size: 12px;
+      color: #6c757d;
+    }
+
+    .qimen-info-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: #212529;
+    }
+
+    .qimen-info-value.sizhu {
+      color: #1565c0;
+      font-family: monospace;
+      letter-spacing: 1px;
+    }
+
+    .qimen-info-value.zhifu {
+      color: #00695c;
+    }
+
+    .qimen-info-value.zhishi {
+      color: #6a1b9a;
+    }
+
+    .qimen-info-value.xunshou {
+      color: #e65100;
+    }
+
+    .qimen-info-value.ju {
+      color: #c62828;
+    }
+
     /* 综合奇门盘 */
     .qimen-pan-grid {
       display: grid;
@@ -1395,6 +1454,33 @@
         请先计算局数
       </div>
       <div class="result-content" id="qimenPanContent">
+        <!-- 信息展示栏 -->
+        <div class="qimen-pan-info">
+          <div class="qimen-info-row">
+            <div class="qimen-info-item">
+              <span class="qimen-info-label">四柱：</span>
+              <span class="qimen-info-value sizhu" id="pan-sizhu">--</span>
+            </div>
+            <div class="qimen-info-item">
+              <span class="qimen-info-label">局数：</span>
+              <span class="qimen-info-value ju" id="pan-ju">--</span>
+            </div>
+          </div>
+          <div class="qimen-info-row">
+            <div class="qimen-info-item">
+              <span class="qimen-info-label">旬首：</span>
+              <span class="qimen-info-value xunshou" id="pan-xunshou">--</span>
+            </div>
+            <div class="qimen-info-item">
+              <span class="qimen-info-label">值符：</span>
+              <span class="qimen-info-value zhifu" id="pan-zhifu">--</span>
+            </div>
+            <div class="qimen-info-item">
+              <span class="qimen-info-label">值使：</span>
+              <span class="qimen-info-value zhishi" id="pan-zhishi">--</span>
+            </div>
+          </div>
+        </div>
         <div class="qimen-pan-grid">
           <!-- 巽四宫 -->
           <div class="qimen-pan-cell" id="pan-cell-4">
@@ -2432,7 +2518,7 @@
     }
 
     // 更新综合奇门盘显示
-    function updateQimenPanDisplay(hourGan, hourZhi, juStr) {
+    function updateQimenPanDisplay(hourGan, hourZhi, juStr, sizhuInfo) {
       const tianGan = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
       const diZhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
       
@@ -2445,6 +2531,22 @@
       const diPan = calculateDiPan(juNumber, isYang);
       const tianPanResult = calculateHeavenPlate(hourGan, hourZhi, juStr);
       const doorResult = calculateDoorPositions(hourGan, hourZhi, juStr);
+      const leaders = calculateLeaders(hourGan, hourZhi, juStr);
+      
+      // 更新信息栏
+      // 四柱
+      if (sizhuInfo) {
+        document.getElementById('pan-sizhu').textContent = 
+          sizhuInfo.year + ' ' + sizhuInfo.month + ' ' + sizhuInfo.day + ' ' + sizhuInfo.hour;
+      }
+      // 局数
+      document.getElementById('pan-ju').textContent = juStr;
+      // 旬首
+      document.getElementById('pan-xunshou').textContent = leaders.xunShou;
+      // 值符
+      document.getElementById('pan-zhifu').textContent = leaders.zhiFu;
+      // 值使
+      document.getElementById('pan-zhishi').textContent = leaders.zhiShi;
       
       // 计算八神
       const shenLayout = calculateBaShen(isYang, tianPanResult.targetPalace);
@@ -2626,7 +2728,7 @@
         updateKongWangMaXingDisplay(hourGan, hourZhi);
         
         // 更新综合奇门盘
-        updateQimenPanDisplay(hourGan, hourZhi, juStr);
+        updateQimenPanDisplay(hourGan, hourZhi, juStr, currentSizhu);
       }
     }
 
@@ -2648,6 +2750,9 @@
     // 当前时干支（用于手动调整时计算值符值使）
     let currentHourGan = null;
     let currentHourZhi = null;
+
+    // 当前四柱信息（用于综合盘显示）
+    let currentSizhu = null;
 
     // 当前选择的经纬度
     let currentLng = null;
@@ -2973,6 +3078,14 @@
       // 保存时干支用于手动调整
       currentHourGan = hourGan;
       currentHourZhi = hourZhi;
+
+      // 保存四柱信息用于综合盘显示
+      currentSizhu = {
+        year: yearGan + yearZhi,
+        month: monthGan + monthZhi,
+        day: dayGan + dayZhi,
+        hour: hourGan + hourZhi
+      };
 
       // 更新地盘和值符值使
       updateDiPan(qimenJu, hourGan, hourZhi);
