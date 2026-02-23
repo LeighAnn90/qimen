@@ -1100,6 +1100,67 @@
       padding: 0 15px 15px;
     }
 
+    /* 历法信息区域 */
+    .detail-lifa-section {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+    }
+
+    .detail-lifa-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .detail-lifa-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .detail-lifa-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+    }
+
+    .detail-lifa-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .detail-lifa-label {
+      font-size: 12px;
+      color: #6c757d;
+    }
+
+    .detail-lifa-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: #212529;
+    }
+
+    .detail-lifa-pillars {
+      display: flex;
+      gap: 8px;
+    }
+
+    .detail-pillar {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1565c0;
+      padding: 2px 6px;
+      background: #e3f2fd;
+      border-radius: 4px;
+    }
+
     /* 紧凑模块网格布局 */
     .compact-modules-grid {
       display: grid;
@@ -1335,44 +1396,6 @@
     <!-- 开始计算按钮 -->
     <div class="card" style="padding: 15px;">
       <button class="btn btn-primary" id="calculateBtn">开始计算</button>
-    </div>
-
-    <!-- 历法显示 -->
-    <div class="card">
-      <div class="card-title">历法信息</div>
-      <div class="result-placeholder" id="resultPlaceholder">
-        请设置时间和位置后点击「开始计算」
-      </div>
-      <div class="result-content" id="resultContent">
-        <div class="true-solar-time" id="trueSolarTimeDisplay">
-          真太阳时: <strong id="trueSolarTimeValue"></strong>
-        </div>
-        <div class="lunar-date">
-          农历: <strong id="lunarDateValue"></strong>
-        </div>
-        <div class="pillars">
-          <div class="pillar">
-            <div class="pillar-label">年柱</div>
-            <div class="pillar-value" id="yearPillar"></div>
-          </div>
-          <div class="pillar">
-            <div class="pillar-label">月柱</div>
-            <div class="pillar-value" id="monthPillar"></div>
-          </div>
-          <div class="pillar">
-            <div class="pillar-label">日柱</div>
-            <div class="pillar-value" id="dayPillar"></div>
-          </div>
-          <div class="pillar">
-            <div class="pillar-label">时柱</div>
-            <div class="pillar-value" id="hourPillar"></div>
-          </div>
-        </div>
-        <div class="futou-sanyuan">
-          <div><span>符头: </span><strong id="futouValue"></strong></div>
-          <div><span>三元: </span><strong id="sanyuanValue"></strong></div>
-        </div>
-      </div>
     </div>
 
     <!-- 奇门遁甲 -->
@@ -1670,6 +1693,49 @@
       </div>
       <div class="collapsible-content">
         <div class="collapsible-inner">
+          <!-- 历法信息 -->
+          <div class="detail-lifa-section">
+            <div class="detail-lifa-title">历法信息</div>
+            <div class="result-placeholder" id="resultPlaceholder">
+              请设置时间和位置后点击「开始计算」
+            </div>
+            <div class="result-content" id="resultContent">
+              <div class="detail-lifa-content">
+                <div class="detail-lifa-row">
+                  <div class="detail-lifa-item">
+                    <span class="detail-lifa-label">真太阳时:</span>
+                    <span class="detail-lifa-value" id="trueSolarTimeValue">--</span>
+                  </div>
+                  <div class="detail-lifa-item">
+                    <span class="detail-lifa-label">农历:</span>
+                    <span class="detail-lifa-value" id="lunarDateValue">--</span>
+                  </div>
+                </div>
+                <div class="detail-lifa-row">
+                  <div class="detail-lifa-item">
+                    <span class="detail-lifa-label">四柱:</span>
+                    <span class="detail-lifa-pillars">
+                      <span class="detail-pillar" id="yearPillar">--</span>
+                      <span class="detail-pillar" id="monthPillar">--</span>
+                      <span class="detail-pillar" id="dayPillar">--</span>
+                      <span class="detail-pillar" id="hourPillar">--</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="detail-lifa-row">
+                  <div class="detail-lifa-item">
+                    <span class="detail-lifa-label">符头:</span>
+                    <span class="detail-lifa-value" id="futouValue">--</span>
+                  </div>
+                  <div class="detail-lifa-item">
+                    <span class="detail-lifa-label">三元:</span>
+                    <span class="detail-lifa-value" id="sanyuanValue">--</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="compact-modules-grid">
             <!-- 洛书九宫 -->
             <div class="compact-module compact-luoshu">
@@ -3004,12 +3070,10 @@
       document.getElementById('jieqiContent').classList.add('show');
 
       // 真太阳时显示
-      const trueSolarTimeDisplay = document.getElementById('trueSolarTimeDisplay');
       if (useTrueSolar) {
-        trueSolarTimeDisplay.classList.add('show');
         document.getElementById('trueSolarTimeValue').textContent = formatDateTime(calcDate);
       } else {
-        trueSolarTimeDisplay.classList.remove('show');
+        document.getElementById('trueSolarTimeValue').textContent = '未启用';
       }
 
       // 农历日期
@@ -3019,11 +3083,11 @@
       document.getElementById('lunarDateValue').textContent = 
         `${lunarYearGanZhi}年 ${lunarMonthName}月${lunarDayName}`;
 
-      // 四柱
-      document.getElementById('yearPillar').innerHTML = renderGanZhi(yearGan, yearZhi);
-      document.getElementById('monthPillar').innerHTML = renderGanZhi(monthGan, monthZhi);
-      document.getElementById('dayPillar').innerHTML = renderGanZhi(dayGan, dayZhi);
-      document.getElementById('hourPillar').innerHTML = renderGanZhi(hourGan, hourZhi);
+      // 四柱（简洁格式）
+      document.getElementById('yearPillar').textContent = yearGan + yearZhi;
+      document.getElementById('monthPillar').textContent = monthGan + monthZhi;
+      document.getElementById('dayPillar').textContent = dayGan + dayZhi;
+      document.getElementById('hourPillar').textContent = hourGan + hourZhi;
 
       // 符头和三元
       document.getElementById('futouValue').textContent = fuTou.ganZhi;
